@@ -1,0 +1,4 @@
+2|Mouse Inalambrico|Mouse ergonomico 2.4GHz bateria recargable|85000.0|19
+3|Teclado Mecanico|Teclado RGB switches blue retroiluminado|210000.0|12
+4|Monitor 24 pulgadas|Full HD 144Hz panel IPS HDMI y DisplayPort|780000.0|6
+5|Auriculares Bluetooth|Cancelacion de ruido activa 30h bateria|50000.0|100

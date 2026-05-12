@@ -1,0 +1,262 @@
+@startuml diagrama-clases
+skinparam classAttributeIconSize 0
+skinparam classFontSize 13
+skinparam defaultFontSize 12
+skinparam classBackgroundColor #F0F4FF
+skinparam classBorderColor #5A7FC0
+skinparam arrowColor #444
+skinparam arrowThickness 1.2
+skinparam linetype ortho
+
+' ─── Paquete Model ────────────────────────────────────────────
+
+package "model" #EEF2FF {
+
+    abstract class Usuario {
+        - id : int
+        - nombre : String
+        - email : String
+        - contrasena : String
+        --
+        + verificarLogin(email, contrasena) : boolean
+        + {abstract} getTipo() : String
+        + getId() : int
+        + getNombre() : String
+        + getEmail() : String
+        + getContrasena() : String
+    }
+
+    class Cliente {
+        - carrito : Carrito
+        - historialPedidos : List<Pedido>
+        --
+        + getTipo() : String
+        + agregarPedido(pedido : Pedido)
+        + getCarrito() : Carrito
+        + getHistorialPedidos() : List<Pedido>
+    }
+
+    class Administrador {
+        --
+        + getTipo() : String
+    }
+
+    class Producto {
+        - id : int
+        - nombre : String
+        - descripcion : String
+        - precio : double
+        - stock : int
+        --
+        + reducirStock(cantidad : int)
+        + aumentarStock(cantidad : int)
+        + hayStock(cantidad : int) : boolean
+    }
+
+    class Carrito {
+        - items : List<ItemCarrito>
+        --
+        + agregarProducto(p : Producto, cantidad : int)
+        + eliminarProducto(productoId : int)
+        + calcularTotal() : double
+        + vaciar()
+        + estaVacio() : boolean
+        + getItems() : List<ItemCarrito>
+    }
+
+    class ItemCarrito {
+        - producto : Producto
+        - cantidad : int
+        --
+        + getSubtotal() : double
+        + getProducto() : Producto
+        + getCantidad() : int
+        + setCantidad(cantidad : int)
+    }
+
+    abstract class Pago {
+        - monto : double
+        --
+        + {abstract} procesarPago() : String
+        + {abstract} getNombreMetodo() : String
+        + getMonto() : double
+    }
+
+    class PagoEfectivo {
+        --
+        + procesarPago() : String
+        + getNombreMetodo() : String
+    }
+
+    class PagoTarjeta {
+        - ultimosDigitos : String
+        --
+        + procesarPago() : String
+        + getNombreMetodo() : String
+        + getUltimosDigitos() : String
+    }
+
+    class Pedido {
+        - id : int
+        - clienteId : int
+        - total : double
+        - metodoPago : String
+        - estado : String
+        - fecha : String
+        --
+        + getId() : int
+        + getClienteId() : int
+        + getTotal() : double
+        + getMetodoPago() : String
+        + getEstado() : String
+        + getFecha() : String
+    }
+
+}
+
+' ─── Herencia ─────────────────────────────────────────────────
+
+Usuario <|-- Cliente
+Usuario <|-- Administrador
+Pago    <|-- PagoEfectivo
+Pago    <|-- PagoTarjeta
+
+' ─── Asociaciones ─────────────────────────────────────────────
+
+Cliente     "1" *-- "1"   Carrito       : tiene >
+Cliente     "1" *-- "*"   Pedido        : historial >
+Carrito     "1" *-- "*"   ItemCarrito   : contiene >
+ItemCarrito "*" --> "1"   Producto      : referencia >
+Pedido      "*" --> "0..*" ItemCarrito  : items >
+
+' ─── Paquete Repository ───────────────────────────────────────
+
+package "repository" #FFF3E0 {
+    class UsuarioRepository {
+        - usuarios : List<Usuario>
+        - RUTA : String
+        --
+        + agregar(u : Usuario)
+        + buscarPorLogin(email, clave) : Usuario
+        + existeEmail(email : String) : boolean
+        + getTodos() : List<Usuario>
+    }
+
+    class ProductoRepository {
+        - productos : List<Producto>
+        - RUTA : String
+        --
+        + agregar(p : Producto)
+        + actualizar(p : Producto)
+        + eliminar(id : int)
+        + buscarPorId(id : int) : Producto
+        + getTodos() : List<Producto>
+    }
+
+    class PedidoRepository {
+        - pedidos : List<Pedido>
+        - RUTA : String
+        --
+        + agregar(p : Pedido)
+        + buscarPorCliente(clienteId : int) : List<Pedido>
+        + getTodos() : List<Pedido>
+    }
+}
+
+' ─── Paquete Service ──────────────────────────────────────────
+
+package "service" #E8F5E9 {
+    class UsuarioService {
+        - repo : UsuarioRepository
+        --
+        + registrarCliente(...) : Cliente
+        + login(email, clave) : Usuario
+    }
+
+    class ProductoService {
+        - repo : ProductoRepository
+        --
+        + crearProducto(...) : Producto
+        + actualizarProducto(...)
+        + eliminarProducto(id : int)
+        + listarTodos() : List<Producto>
+        + buscarPorId(id : int) : Producto
+    }
+
+    class PedidoService {
+        - pedidoRepo : PedidoRepository
+        - productoRepo : ProductoRepository
+        --
+        + confirmarPedido(cliente, pago) : Pedido
+        + obtenerPedidosDeCliente(id) : List<Pedido>
+        + obtenerTodos() : List<Pedido>
+    }
+}
+
+' ─── Paquete Utils ────────────────────────────────────────────
+
+package "utils" #FFF9C4 {
+    class FileManager {
+        + {static} leerArchivo(ruta) : List<String>
+        + {static} escribirArchivo(ruta, lineas)
+        + {static} agregarLinea(ruta, linea)
+    }
+
+    class IdGenerator {
+        - {static} contadorUsuarios : int
+        - {static} contadorProductos : int
+        - {static} contadorPedidos : int
+        --
+        + {static} siguienteUsuario() : int
+        + {static} siguienteProducto() : int
+        + {static} siguientePedido() : int
+        + {static} sincronizarUsuario(maxId)
+        + {static} sincronizarProducto(maxId)
+        + {static} sincronizarPedido(maxId)
+    }
+}
+
+' ─── Paquete UI ───────────────────────────────────────────────
+
+package "ui" #F3E5F5 {
+    class MainApp {
+        --
+        + mostrarLogin()
+        + mostrarRegistro()
+        + mostrarPanelCliente(c : Cliente)
+        + mostrarPanelAdmin(a : Administrador)
+        + {static} main(args)
+    }
+
+    class LoginPanel
+    class RegistroPanel
+    class ClientePanel
+    class AdminPanel
+}
+
+' ─── Dependencias entre capas ─────────────────────────────────
+
+UsuarioService  --> UsuarioRepository
+ProductoService --> ProductoRepository
+PedidoService   --> PedidoRepository
+PedidoService   --> ProductoRepository
+
+UsuarioRepository  --> FileManager
+ProductoRepository --> FileManager
+PedidoRepository   --> FileManager
+
+UsuarioRepository  --> IdGenerator
+ProductoRepository --> IdGenerator
+PedidoRepository   --> IdGenerator
+
+MainApp      --> UsuarioService
+MainApp      --> ProductoService
+MainApp      --> PedidoService
+LoginPanel   --> UsuarioService
+RegistroPanel --> UsuarioService
+ClientePanel --> ProductoService
+ClientePanel --> PedidoService
+AdminPanel   --> ProductoService
+AdminPanel   --> PedidoService
+
+@enduml

@@ -1,0 +1,81 @@
+@startuml diagrama-casos-uso
+skinparam actorStyle awesome
+skinparam usecaseBackgroundColor #F0F4FF
+skinparam usecaseBorderColor #5A7FC0
+skinparam usecaseFontSize 12
+skinparam defaultFontSize 12
+skinparam arrowColor #444
+skinparam arrowThickness 1.2
+
+left to right direction
+
+actor "Cliente"       as C
+actor "Administrador" as A
+
+' ─── Sistema ──────────────────────────────────────────────────
+
+rectangle "EasyMarket" {
+
+    ' Acceso
+    package "Acceso al sistema" {
+        usecase "Registrarse"         as UC1
+        usecase "Iniciar sesión"      as UC2
+        usecase "Cerrar sesión"       as UC3
+    }
+
+    ' Cliente
+    package "Funciones del cliente" {
+        usecase "Ver catálogo\nde productos"     as UC4
+        usecase "Agregar producto\nal carrito"   as UC5
+        usecase "Ver carrito"                    as UC6
+        usecase "Quitar producto\ndel carrito"   as UC7
+        usecase "Confirmar compra"               as UC8
+        usecase "Seleccionar método\nde pago"    as UC9
+        usecase "Ver historial\nde pedidos"      as UC10
+    }
+
+    ' Admin
+    package "Funciones del administrador" {
+        usecase "Agregar producto"    as UC11
+        usecase "Editar producto"     as UC12
+        usecase "Eliminar producto"   as UC13
+        usecase "Ver todos\nlos pedidos" as UC14
+    }
+
+}
+
+' ─── Relaciones Cliente ───────────────────────────────────────
+
+C --> UC1
+C --> UC2
+C --> UC3
+C --> UC4
+C --> UC5
+C --> UC6
+C --> UC7
+C --> UC8
+C --> UC10
+
+' La selección de método de pago ocurre dentro de confirmar compra
+UC8 ..> UC9 : <<include>>
+
+' Para agregar al carrito el cliente debe haber visto el catálogo
+UC5 ..> UC4 : <<include>>
+
+' Para quitar o ver carrito, primero hay que tener algo en el carrito
+UC7 ..> UC6 : <<include>>
+UC8 ..> UC6 : <<include>>
+
+' ─── Relaciones Administrador ─────────────────────────────────
+
+A --> UC2
+A --> UC3
+A --> UC11
+A --> UC12
+A --> UC13
+A --> UC14
+
+' El admin también puede ver el catálogo (para revisar los productos)
+A --> UC4
+
+@enduml

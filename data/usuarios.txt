@@ -1,0 +1,3 @@
+1|Administrador|Admin|admin@easymarket.com|admin123
+2|Cliente|santiago|user@easymarket.com|user123
+3|Cliente|Santiago Vargas|sjvargaslorduy@gmail.com|0520120
