@@ -1,7 +1,7 @@
 # EasyMarket 🛒
 
 Sistema de comercio electrónico desarrollado en Java con Swing como interfaz gráfica.  
-Proyecto final — Programación Orientada a Objetos.
+Proyecto final de corte — Programación Orientada a Objetos.
 
 ---
 
@@ -9,10 +9,10 @@ Proyecto final — Programación Orientada a Objetos.
 
 | Nombre | GitHub |
 |--------|--------|
-| (Tu nombre aquí) | @usuario |
-| (Integrante 2) | @usuario |
-| (Integrante 3) | @usuario |
-| (Integrante 4) | @usuario |
+| (Giuseppe Rinaldi Acosta) | @usuario |
+| (Marlon Meza Castro) | @usuario |
+| (Santiago Javier Vargas Lorduy) | @usuario |
+
 
 ---
 
