@@ -9,9 +9,9 @@ Proyecto final de corte — Programación Orientada a Objetos.
 
 | Nombre | @usuario |
 |--------|--------|
-| (Giuseppe Rinaldi Acosta) | 
-| (Marlon Meza Castro) | 
-| (Santiago Javier Vargas Lorduy) | 
+| (Giuseppe Rinaldi Acosta) | @Usuario |
+| (Marlon Meza Castro) | @Usuario |
+| (Santiago Javier Vargas Lorduy) | @Usuario |
 
 
 ---
