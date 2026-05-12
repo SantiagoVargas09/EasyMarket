@@ -7,7 +7,7 @@ Proyecto final de corte — Programación Orientada a Objetos.
 
 ## Integrantes
 
-| Nombre | 
+| Nombre | @usuario |
 |--------|--------|
 | (Giuseppe Rinaldi Acosta) | 
 | (Marlon Meza Castro) | 
