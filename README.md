@@ -9,9 +9,9 @@ Proyecto final de corte — Programación Orientada a Objetos.
 
 | Nombre | GitHub |
 |--------|--------|
-| (Giuseppe Rinaldi Acosta) | @usuario |
-| (Marlon Meza Castro) | @usuario |
-| (Santiago Javier Vargas Lorduy) | @usuario |
+| (Giuseppe Rinaldi Acosta) | 
+| (Marlon Meza Castro) | 
+| (Santiago Javier Vargas Lorduy) | 
 
 
 ---
